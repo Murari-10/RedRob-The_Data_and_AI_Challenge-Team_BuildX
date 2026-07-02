@@ -31,10 +31,9 @@ from src.reranking.cross_encoder import CrossReranker
 from src.reranking import recruiter_brain as brain
 from src.reasoning import build_reasoning
 
-st.set_page_config(page_title="Redrob RAG Ranker", layout="wide")
-st.title("🔎 Redrob — Multi-Stage RAG Candidate Ranker")
-# st.caption("Local bi-encoder → vector store → BM25 → recruiter-brain → cross-encoder. "
-#            "CPU-only, no network.")
+st.set_page_config(page_title="Redrob Resume Ranker", layout="wide")
+st.title("🔎 Redrob — Multi-Stage  Candidate Ranker")
+# st.caption("Surface your best-fit candidates from thousands in seconds, not spreadsheets.")
 
 
 def _load_records(uploaded, sample_path):
