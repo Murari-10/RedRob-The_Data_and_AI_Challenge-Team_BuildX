@@ -57,7 +57,16 @@ with st.sidebar:
     st.header("Input")
     uploaded = st.file_uploader("Candidate sample (.json or .jsonl)",
                                 type=["json", "jsonl"])
-    sample_path = st.text_input("…or a path", value="./data/sample_candidates.json")
+    _data_dir = Path(__file__).parent / "data"
+    _data_files = sorted(
+        p for p in _data_dir.glob("*")
+        if p.suffix in (".json", ".jsonl") and "schema" not in p.name.lower()
+    )
+    _choice = st.selectbox(
+        "…or choose a sample from data/",
+        options=["(none)"] + [p.name for p in _data_files],
+    )
+    sample_path = "" if _choice == "(none)" else str(_data_dir / _choice)
     topk = st.number_input("Show top-K", min_value=1, max_value=100,
                            value=100, step=1)
     run = st.button("Rank candidates", type="primary")

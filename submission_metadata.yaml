@@ -22,7 +22,7 @@ team_members:
 # ============================================================================
 # Code and reproducibility
 # ============================================================================
-github_repo: "https://github.com/Sricharan0509/RedRob-The_Data_and_AI_Challenge-Team_BuildX"
+github_repo: "https://github.com/Murari-10/RedRob-The_Data_and_AI_Challenge-Team_BuildX"
 
 sandbox_link: "https://huggingface.co/spaces/YOUR_USERNAME/redrob-ranker"
 # Acceptable: HuggingFace Spaces, Streamlit Cloud, Replit, Colab, Binder, Docker
