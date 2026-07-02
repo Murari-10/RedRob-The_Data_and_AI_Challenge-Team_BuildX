@@ -59,7 +59,7 @@ with st.sidebar:
                                 type=["json", "jsonl"])
     sample_path = st.text_input("…or a path", value="./data/sample_candidates.json")
     topk = st.number_input("Show top-K", min_value=1, max_value=100,
-                           value=25, step=1)
+                           value=100, step=1)
     run = st.button("Rank candidates", type="primary")
 
 if run:
