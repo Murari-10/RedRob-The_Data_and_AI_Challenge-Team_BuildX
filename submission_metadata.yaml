@@ -24,7 +24,7 @@ team_members:
 # ============================================================================
 github_repo: "https://github.com/Murari-10/RedRob-The_Data_and_AI_Challenge-Team_BuildX"
 
-sandbox_link: "https://huggingface.co/spaces/YOUR_USERNAME/redrob-ranker"
+sandbox_link: "https://redrob-resume-ranker.streamlit.app/"
 # Acceptable: HuggingFace Spaces, Streamlit Cloud, Replit, Colab, Binder, Docker
 
 reproduce_command: "python rank.py --candidates ./data/candidates.jsonl --out ./submission.csv"
