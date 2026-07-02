@@ -33,8 +33,8 @@ from src.reasoning import build_reasoning
 
 st.set_page_config(page_title="Redrob RAG Ranker", layout="wide")
 st.title("🔎 Redrob — Multi-Stage RAG Candidate Ranker")
-st.caption("Local bi-encoder → vector store → BM25 → recruiter-brain → cross-encoder. "
-           "CPU-only, no network.")
+# st.caption("Local bi-encoder → vector store → BM25 → recruiter-brain → cross-encoder. "
+#            "CPU-only, no network.")
 
 
 def _load_records(uploaded, sample_path):
@@ -63,8 +63,8 @@ with st.sidebar:
         if p.suffix in (".json", ".jsonl") and "schema" not in p.name.lower()
     )
     _choice = st.selectbox(
-        "…or choose a sample from data/",
-        options=["(none)"] + [p.name for p in _data_files],
+        "…Or choose a sample data",
+        options=["Select data file"] + [p.name for p in _data_files],
     )
     sample_path = "" if _choice == "(none)" else str(_data_dir / _choice)
     topk = st.number_input("Show top-K", min_value=1, max_value=100,
@@ -78,7 +78,7 @@ if run:
         st.stop()
     st.success(f"Loaded {len(cands)} candidates.")
 
-    prog = st.progress(0.0, "Phase 1 — features")
+    prog = st.progress(0.0, "Features Extraction...")
     ids, docs, diags, hflag = [], [], [], []
     s_struct, gates, behav, hkill = [], [], [], []
     for c in cands:
@@ -95,7 +95,7 @@ if run:
                                      c.get("profile", {}) or {}))
         hkill.append(C.HONEYPOT_KILL if hp else 1.0)
 
-    prog.progress(0.35, "Phase 2 — dense + BM25 retrieval")
+    prog.progress(0.35, "Dense + BM25 retrieval...")
     enc = Encoder(prefer_st=True)
     matrix = enc.encode(docs, is_query=False)
     jd_vec = build_jd_vector(enc)
@@ -104,13 +104,13 @@ if run:
     lex_raw = bm25.scores_for_query(jd_query_terms())
     sim, s_dense, s_lex = fuse(dense_raw, lex_raw)
 
-    prog.progress(0.6, "Phase 3 — recruiter-brain composite")
+    prog.progress(0.6, "Recruiter-brain composite...")
     rfit = brain.recruiter_fit(np.array(s_struct, np.float32), sim)
     prelim = brain.finalize(rfit, np.array(gates, np.float32),
                             np.array(behav, np.float32), np.array(hkill, np.float32))
     short = np.argsort(-prelim)[:min(C.SHORTLIST_N, len(ids))]
 
-    prog.progress(0.8, f"Phase 4 — cross-encoder rerank ({enc.mode})")
+    prog.progress(0.8, f"Cross-encoder rerank ({enc.mode})...")
     rr = CrossReranker()
     s_cross = rr.score([docs[i] for i in short])
     fit = rfit.copy()
@@ -139,7 +139,7 @@ if run:
     ]
     df = pd.DataFrame(rows, columns=["candidate_id", "rank", "score", "reasoning"])
 
-    st.subheader(f"Ranked candidates  ·  encoder={enc.mode}  rerank={rr.mode}")
+    st.subheader(f"Ranked candidates")
     st.dataframe(df, use_container_width=True, hide_index=True)
     st.download_button(
         "Download CSV",
