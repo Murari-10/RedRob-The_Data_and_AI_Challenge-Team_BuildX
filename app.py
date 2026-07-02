@@ -62,11 +62,12 @@ with st.sidebar:
         p for p in _data_dir.glob("*")
         if p.suffix in (".json", ".jsonl") and "schema" not in p.name.lower()
     )
+    _PICK_PLACEHOLDER = "Select data file"
     _choice = st.selectbox(
         "…Or choose a sample data",
-        options=["Select data file"] + [p.name for p in _data_files],
+        options=[_PICK_PLACEHOLDER] + [p.name for p in _data_files],
     )
-    sample_path = "" if _choice == "(none)" else str(_data_dir / _choice)
+    sample_path = "" if _choice == _PICK_PLACEHOLDER else str(_data_dir / _choice)
     topk = st.number_input("Show top-K", min_value=1, max_value=100,
                            value=100, step=1)
     run = st.button("Rank candidates", type="primary")
@@ -147,3 +148,43 @@ if run:
         file_name="submission.csv",
         mime="text/csv",
     )
+
+else:
+    # Landing state — friendly getting-started guide so the main area isn't blank.
+    st.info(
+        "👈 **Start on the left.** Upload a candidate file **or** pick a ready-made "
+        "sample from the sidebar, then hit **Rank candidates**."
+    )
+
+    with st.container(border=True):
+        st.markdown("#### Get started in 3 steps")
+        c1, c2, c3 = st.columns(3)
+        with c1:
+            st.markdown("### 1 📤")
+            st.markdown("**Provide candidates**")
+            st.caption(
+                "Drag & drop your own `.json` / `.jsonl`, or choose a bundled "
+                "sample (50 or 10K records)."
+            )
+        with c2:
+            st.markdown("### 2 🎚️")
+            st.markdown("**Set how many to show**")
+            st.caption(
+                "Use **Show top-K** to control how many ranked candidates "
+                "appear in the results table."
+            )
+        with c3:
+            st.markdown("### 3 🚀")
+            st.markdown("**Rank & export**")
+            st.caption(
+                "Hit **Rank candidates** to run the pipeline, then download "
+                "the ranked shortlist as CSV."
+            )
+
+    with st.expander("What happens under the hood?"):
+        st.markdown(
+            "- **Features** — structural scoring, role gates & honeypot checks\n"
+            "- **Retrieval** — dense bi-encoder + BM25 lexical, fused\n"
+            "- **Recruiter-brain** — composite fit with behavioral signals\n"
+            "- **Rerank** — cross-encoder refines the shortlist into a final ranking"
+        )
