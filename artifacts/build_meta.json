@@ -2,7 +2,7 @@
   "encoder_mode": "hash",
   "dim": 512,
   "n": 100000,
-  "vector_store": "numpy",
+  "vector_store": "chroma",
   "seed": 42,
   "dense_model": "hashing-fallback"
 }
