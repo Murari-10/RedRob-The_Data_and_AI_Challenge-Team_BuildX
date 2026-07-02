@@ -1,0 +1,21 @@
+# RAG candidate ranker — pinned, CPU-only, offline at rank time.
+# Core (required):
+numpy==1.26.4
+
+# Fast JSONL parsing (optional; stdlib json used if absent):
+orjson==3.10.7
+
+# Dense bi-encoder + local cross-encoder (optional; pure-numpy hashing +
+# lexical-overlap fallbacks keep the pipeline reproducible if these are absent).
+# CPU wheels; no GPU/network needed at rank time once models are cached.
+sentence-transformers==3.0.1
+torch==2.2.2
+
+# Local vector database used at BUILD time to demonstrate the RAG workflow
+# (numpy flat index is the source of truth at rank time). Optional.
+chromadb==0.5.5
+
+# Sandbox dashboard (interactive demo). Not needed by rank.py.
+# pandas backs app.py's results table (also a transitive streamlit dependency).
+streamlit==1.37.1
+pandas==2.2.3
